@@ -6,6 +6,9 @@ describe('Login tests!!!', () => {
     cy.get('[data-test=password').type("secret_sauce")
     cy.get('[data-test=login-button').click()
     cy.get('[data-test=product_sort_container]').should('be.visible')
+    cy.getCookies().should('have.length', 1).then((cookies) => {
+      expect(cookies[0]).to.have.property("name", "session-username")
+    })
   })
 
   it('ID = 1AC2 ', () => {
@@ -52,6 +55,9 @@ describe('Login tests!!!', () => {
     cy.get('[data-test=password').type("secret_sauce")
     cy.get('[data-test=login-button').click()
     cy.get('[data-test=product_sort_container]').should('be.visible')
+    cy.getCookies().should('have.length', 1).then((cookies) => {
+      expect(cookies[0]).to.have.property("name", "session-username")
+    })
   })
 
   it('ID = 1CC2 ', () => {
@@ -75,8 +81,11 @@ describe('Login tests!!!', () => {
     cy.get('[data-test=password').type("secret_sauce")
     cy.get('[data-test=login-button').click()
     cy.get('[data-test=product_sort_container]').should('be.visible')
+    cy.getCookies().should('have.length', 1).then((cookies) => {
+      expect(cookies[0]).to.have.property("name", "session-username")
+    })
   })
-
+  
   it('ID = 1DC2 ', () => {
     cy.visit('/').url().should('eq', 'https://www.saucedemo.com/')
     cy.get('[data-test=username').type("performance_glitch_user")
@@ -114,4 +123,3 @@ describe('Login tests!!!', () => {
     cy.get('[data-test="error"]').contains("Epic sadface: Username and password do not match any user in this service").should('be.visible')
   })
 })
-
