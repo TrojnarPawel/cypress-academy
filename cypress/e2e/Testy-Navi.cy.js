@@ -5,6 +5,9 @@ describe('Time for shopping!!!', () => {
         cy.get('[data-test=username').type("standard_user")
         cy.get('[data-test=password').type("secret_sauce")
         cy.get('[data-test=login-button').click()
+        cy.getCookies().should('have.length', 1).then((cookies) => {
+            expect(cookies[0]).to.have.property("name", "session-username");
+        })
     })
 
     it('ID = 4AC1', () => {
@@ -26,7 +29,7 @@ describe('Time for shopping!!!', () => {
     
 
     it('ID = 4AC3', () => {
-        cy.get('.shopping_cart_link').click()
+        cy.get('.shopping_cart_container').click()
         cy.get('#react-burger-menu-btn').click().then(() => {
             cy.get('#inventory_sidebar_link').click()
         })
@@ -83,17 +86,16 @@ describe('Time for shopping!!!', () => {
     })
     
 
-    it.only('ID = 4DC1', () => {
+    it('ID = 4DC1', () => {
         cy.get('.social_twitter').children().should('have.attr', 'href', 'https://twitter.com/saucelabs')
     })
     
-    it.only('ID = 4DC2', () => {
+    it('ID = 4DC2', () => {
         cy.get('.social_facebook').children().should('have.attr', 'href', 'https://www.facebook.com/saucelabs')
     })
 
-    it.only('ID = 4DC3', () => {
+    it('ID = 4DC3', () => {
         cy.get('.social_linkedin').children().should('have.attr', 'href', 'https://www.linkedin.com/company/sauce-labs/')
     })
 
 })
-
