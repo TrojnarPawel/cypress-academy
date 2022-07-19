@@ -5,14 +5,15 @@ describe('Time for shopping!!!', () => {
         cy.get('[data-test=username').type("standard_user")
         cy.get('[data-test=password').type("secret_sauce")
         cy.get('[data-test=login-button').click()
-    })
-    
-//Lista produktów; przechodzenie na stronę produktu, scrollowanie strony
-
-    it('BONUS TRACK: SPRAWDZAMY CIACHO', () => {
-        cy.getCookies().should('have.length', 1)
+        cy.getCookies().should('have.length', 1).then((cookies) => {
+            expect(cookies[0]).to.have.property("name", "session-username")
         })
+    })
 
+    function dodanieProduktu(test) {
+        cy.get(`.inventory_item`).contains(test).parents('.inventory_item_description').find('button').click()
+    }
+    
     it('ID = 2AC1 ', () => {
         cy.get('.inventory_item_name').contains('Sauce Labs Backpack').click()
         cy.get('[data-test=back-to-products]').should('be.visible')
@@ -28,8 +29,6 @@ describe('Time for shopping!!!', () => {
         cy.scrollTo('bottom')
         cy.get('.inventory_item_name').contains('Test.allTheThings() T-Shirt (Red)').should('be.visible')
     })
-
-//Dodawanie do koszyka z widoku listy
 
     it('ID = 2C1C1 ', () => {
         cy.get('[data-test="add-to-cart-sauce-labs-backpack"]').click()
@@ -54,8 +53,6 @@ describe('Time for shopping!!!', () => {
         cy.get('.inventory_item_name').contains('Sauce Labs Bike Light').should('be.visible')
         cy.get('.inventory_item_name').contains('Sauce Labs Backpack').should('be.visible')
         cy.get('.inventory_item_name').contains('Sauce Labs Bolt T-Shirt').should('be.visible')
-
- //Dodawanie do koszyka z widoku produktu
 
     it('ID = 2C2C1 ', () => {
             cy.get('.inventory_item_name').contains('Sauce Labs Backpack').click()
@@ -91,28 +88,21 @@ describe('Time for shopping!!!', () => {
 
     })
 
-    function dodajProd1() {
-        cy.get('[data-test="add-to-cart-sauce-labs-backpack"]').click()
-    }
-    function dodajProd2() {
-        cy.get('[data-test="add-to-cart-sauce-labs-bike-light"]').click()
-    }
-
     it('ID = 2DC1 ', () => {
-        dodajProd1()
+        dodanieProduktu('Sauce Labs Backpack')
         cy.get('[data-test="remove-sauce-labs-backpack"]').click()
         cy.get('[data-test="add-to-cart-sauce-labs-backpack"]').should('be.visible')
     })
 
     it('ID = 2DC2 ', () => {
-        dodajProd1()
+        dodanieProduktu('Sauce Labs Backpack')
         cy.get('.inventory_item_name').contains("Sauce Labs Backpack").click()
         cy.get('[data-test="remove-sauce-labs-backpack"]').click()
         cy.get('[data-test="add-to-cart-sauce-labs-backpack"]').should('be.visible')
     })
 
     it('ID = 2DC3 ', () => {
-        dodajProd1()
+        dodanieProduktu('Sauce Labs Backpack')
         cy.get('.inventory_item_name').contains("Sauce Labs Backpack").click()
         cy.get('.shopping_cart_link').click()
         cy.get('[data-test="remove-sauce-labs-backpack"]').click()
@@ -121,7 +111,7 @@ describe('Time for shopping!!!', () => {
     })
 
     it('ID = 2EC1 ', () => {
-        dodajProd1()
+        dodanieProduktu('Sauce Labs Backpack')
             cy.get('.shopping_cart_link').click()
             cy.get('.inventory_item_desc').should('be.visible')
             cy.get('.inventory_item_name').contains("Sauce Labs Backpack").click()
@@ -129,8 +119,8 @@ describe('Time for shopping!!!', () => {
     })
 
     it('ID = 2EC2 ', () => {
-            dodajProd1()
-            dodajProd2()
+            dodanieProduktu('Sauce Labs Backpack')
+            dodanieProduktu('Sauce Labs Bike Light')
             cy.get('.shopping_cart_link').click()
             cy.get('.inventory_item_desc').should('be.visible')
             cy.get('.inventory_item_name').contains("Sauce Labs Backpack").click()
@@ -141,8 +131,8 @@ describe('Time for shopping!!!', () => {
     })
 
     it('ID = 2EC3 ', () => {
-            dodajProd1()
-            dodajProd2()
+            dodanieProduktu('Sauce Labs Backpack')
+            dodanieProduktu('Sauce Labs Bike Light')
             cy.get('.shopping_cart_link').click()
             cy.get('.inventory_item_desc').should('be.visible')
             cy.get('[data-test="checkout"]').click()
@@ -150,8 +140,6 @@ describe('Time for shopping!!!', () => {
             cy.get('.inventory_item_desc').should('be.visible')
     })
     
-
-        //PUSTY KOSZYK 
     it('ID = 2FC1 ', () => {
             cy.get('.shopping_cart_link').click()
             cy.get('[data-test="checkout"]').click()
@@ -183,11 +171,9 @@ describe('Time for shopping!!!', () => {
     
     })
 
-    //Resetowanie aplikacji - nie działa poprawnie bez reload()
-
     it('ID = 3C1', () => {
-        dodajProd1()
-        dodajProd2()
+        dodanieProduktu('Sauce Labs Backpack')
+        dodanieProduktu('Sauce Labs Bike Light')
         cy.get('#react-burger-menu-btn').click().then(() => {
             cy.get('#reset_sidebar_link').click()
         })
@@ -197,8 +183,8 @@ describe('Time for shopping!!!', () => {
     })
 
     it('ID = 3C2', () => {
-        dodajProd1()
-        dodajProd2()
+        dodanieProduktu('Sauce Labs Backpack')
+        dodanieProduktu('Sauce Labs Bike Light')
         cy.get('.inventory_item_name').contains("Sauce Labs Backpack").click()
         cy.get('#react-burger-menu-btn').click().then(() => {
             cy.get('#reset_sidebar_link').click()
@@ -208,7 +194,7 @@ describe('Time for shopping!!!', () => {
     })
 
     it('ID = 3C3', () => {
-        dodajProd1()
+        dodanieProduktu('Sauce Labs Backpack')
         cy.get('.shopping_cart_link').click() 
         cy.get('#react-burger-menu-btn').click().then(() => {
             cy.get('#reset_sidebar_link').click()
